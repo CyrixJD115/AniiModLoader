@@ -122,21 +122,34 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
 
     internal class InteropResolver : INetModuleResolver
     {
-        private readonly Dictionary<string, ModuleDefinition> _cache = new();
-        
+        private readonly Dictionary<string, ModuleDefinition> _cache = new(StringComparer.OrdinalIgnoreCase);
+
         public void Dispose()
         {
             _cache.Clear();
         }
-        
+
         internal void Add(ModuleDefinition module)
         {
+            // Aniimo: index the module under its metadata name AND its
+            // bare assembly name (sans extension), because AsmResolver's
+            // scope lookups arrive in both formats depending on path.
             _cache[module.Name] = module;
+            var bare = Path.GetFileNameWithoutExtension(module.Name);
+            _cache[bare] = module;
         }
 
         public ModuleDefinition Resolve(string name)
         {
-            return _cache.GetValueOrDefault(name);
+            if (_cache.TryGetValue(name, out var hit))
+                return hit;
+
+            var bare = Path.GetFileNameWithoutExtension(name);
+            if (_cache.TryGetValue(bare, out hit))
+                return hit;
+
+            Console.WriteLine($"[aniimo-resolver] MISS: '{name}' (known: {string.Join(", ", _cache.Keys.OrderBy(k => k).Take(8))}...)");
+            return null;
         }
     }
 }

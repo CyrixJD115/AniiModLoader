@@ -137,11 +137,11 @@ namespace MelonLoader
             Fixes.ProcessFix.Install();
 #endif
 
-#if NET6_0_OR_GREATER
             // Aniimo nopatch mode (--aniimo.nopatch): skip every native
             // code detour - this game's startup kills processes with
             // patched GameAssembly code pages.
             bool nopatch = Array.IndexOf(Environment.GetCommandLineArgs(), "--aniimo.nopatch") >= 0;
+#if NET6_0_OR_GREATER
             if (nopatch)
                 InternalUtils.AniimoTrace.Log("nopatch: skipping native detour installs");
             if (!nopatch)

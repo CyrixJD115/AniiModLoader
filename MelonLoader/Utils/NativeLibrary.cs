@@ -75,7 +75,7 @@ namespace MelonLoader
                 try
                 {
                     var path = System.IO.Path.Combine(
-                        MelonEnvironment.MelonLoaderDirectory,
+                        MelonLoader.Utils.MelonEnvironment.MelonLoaderDirectory,
                         "Il2CppNameMap.txt");
                     if (System.IO.File.Exists(path))
                     {
