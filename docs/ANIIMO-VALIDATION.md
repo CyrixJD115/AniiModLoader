@@ -49,7 +49,8 @@ Two later failures become visible after Pass12:
 
 ## Validation status
 
-* Full offline generation: **passed**, sequential and parallel.
+* Full offline generation: **passed**, one sequential and two parallel runs.
+* Reapplying the sanitizer: **zero changes**, all 134 input files byte-identical.
 * Output: **133 interop DLLs**, with identical type/field/method inventories
   between sequential and parallel runs. Binary hashes differ between runs;
   byte-for-byte reproducibility is not claimed.
@@ -58,7 +59,9 @@ Two later failures become visible after Pass12:
   `Il2Cpp__Generated.dll`. This input build has no `Assembly-CSharp.dll`.
 * Base-type resolution scan after normalization: **zero unresolved**.
 * Managed loader and generator Windows-targeted build: **passed**.
-* Windows NativeAOT bootstrap from macOS: **unsupported cross-OS build**.
+* Windows NativeAOT bootstrap: **passed on Windows CI** at
+  https://github.com/CyrixJD115/AniiModLoader/actions/runs/36272298004.
+  Direct macOS cross-compilation was rejected; CI built the actual native DLL.
 * Main-menu boot, second-boot hash cache, safe mode, test-mod load: **not run**.
 * Export-name map: **not recovered/verified**. Do not substitute guessed names.
 * Branding rename and optimizations gated on boot validation: **pending**.
