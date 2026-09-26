@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Semver;
 
-namespace MelonLoader.Il2CppAssemblyGenerator.Packages
+namespace AniiModLoader.Il2CppAssemblyGenerator.Packages
 {
     internal class Cpp2IL : Models.ExecutablePackage
     {
@@ -13,7 +13,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
         internal bool UsedPrebaked { get; private set; }
 
         private static string ReleaseName =>
-            MelonUtils.IsWindows ? "Windows" : MelonUtils.IsUnix ? "Linux" : "OSX";
+            AniiModUtils.IsWindows ? "Windows" : AniiModUtils.IsUnix ? "Linux" : "OSX";
 		
         internal Cpp2IL()
         {
@@ -88,13 +88,13 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
             // Cpp2IL's v29 attribute parsing. Prebaked DummyDlls (staged
             // by our tooling in PrebakedDummyDll/) bypass Cpp2IL entirely;
             // Il2CppInterop consumes the output folder the same way.
-            var prebaked = Path.Combine(Core.BasePath, "PrebakedDummyDll");
+            var prebaked = Compatibility.LoaderPaths.ExistingDataPath(LoaderConfig.Current.Loader.BaseDirectory, Path.Combine("Dependencies", "Il2CppAssemblyGenerator", "PrebakedDummyDll"));
             if (Directory.Exists(prebaked)
                 && Directory.GetFiles(prebaked, "*.dll").Length > 0)
             {
                 Core.Logger.Msg("Using Prebaked DummyDlls (bypassing Cpp2IL)...");
                 Directory.CreateDirectory(OutputFolder);
-                PrebakedAssemblySanitizer.Normalize(prebaked, OutputFolder, message => Core.Logger.Msg(message));
+                PrebakedAssemblySanitizer.Normalize(prebaked, OutputFolder, message => AniiModDebug.Msg(message));
                 UsedPrebaked = true;
                 return true;
             }
@@ -103,17 +103,17 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
             // game directory (symlinks to everything real except the
             // metadata, which points at the decrypted copy) lets Cpp2IL
             // see plain metadata without touching the game's file.
-            var shadow = Path.Combine(Core.BasePath, "AniimoShadow");
+            var shadow = Compatibility.LoaderPaths.ExistingDataPath(LoaderConfig.Current.Loader.BaseDirectory, Path.Combine("Dependencies", "Il2CppAssemblyGenerator", "AniimoShadow"));
             var shadowGameAssembly = Path.Combine(shadow, "GameAssembly.dll");
             var gamePath = File.Exists(shadowGameAssembly)
                 ? "\"" + shadow + "\""
                 : "\"" + Path.GetDirectoryName(Core.GameAssemblyPath) + "\"";
             return Execute([
-                MelonDebug.IsEnabled() ? "--verbose" : string.Empty,
+                AniiModDebug.IsEnabled() ? "--verbose" : string.Empty,
 
                 "--game-path",
 #if OSX
-                "\"" + MelonUtils.GetPathAncestor(Core.GameAssemblyPath, 3) + "\"",
+                "\"" + AniiModUtils.GetPathAncestor(Core.GameAssemblyPath, 3) + "\"",
 #else
                 gamePath,
 #endif

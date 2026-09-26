@@ -1,21 +1,21 @@
-﻿using Il2CppInterop.HarmonySupport;
+using Il2CppInterop.HarmonySupport;
 using Il2CppInterop.Runtime.Injection;
 using Il2CppInterop.Runtime.Startup;
-using MelonLoader.Support.Preferences;
+using AniiModLoader.Support.Preferences;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using MelonLoader.CoreClrUtils;
+using AniiModLoader.CoreClrUtils;
 using UnityEngine;
 using Il2CppInterop.Common;
 using Microsoft.Extensions.Logging;
-using MelonLoader.Utils;
+using AniiModLoader.Utils;
 using System.IO;
-using MelonLoader.InternalUtils;
+using AniiModLoader.InternalUtils;
 
-[assembly: MelonLoader.PatchShield]
+[assembly: AniiModLoader.PatchShield]
 
-namespace MelonLoader.Support
+namespace AniiModLoader.Support
 {
     internal static class Main
     {
@@ -31,7 +31,7 @@ namespace MelonLoader.Support
         {
             Interface = interface_from; 
 
-            foreach (var file in Directory.GetFiles(MelonEnvironment.Il2CppAssembliesDirectory, "*.dll"))
+            foreach (var file in Directory.GetFiles(AniiModEnvironment.Il2CppAssembliesDirectory, "*.dll"))
             {
                 try
                 {
@@ -49,7 +49,7 @@ namespace MelonLoader.Support
 
             Il2CppInteropRuntime runtime = Il2CppInteropRuntime.Create(new()
             {
-                DetourProvider = new MelonDetourProvider(),
+                DetourProvider = new AniiModDetourProvider(),
                 UnityVersion = new Version(
                     InternalUtils.UnityInformationHandler.EngineVersion.Major,
                     InternalUtils.UnityInformationHandler.EngineVersion.Minor,
@@ -70,8 +70,8 @@ namespace MelonLoader.Support
                 out MethodInfo sceneUnloaded);
             if (sceneLoaded == null)
             {
-                MelonLogger.Warning("Failed to find Internal_SceneLoaded method");
-                MelonLogger.Warning("Falling back to SupportModule Component Creation");
+                AniiModLogger.Warning("Failed to find Internal_SceneLoaded method");
+                AniiModLogger.Warning("Falling back to SupportModule Component Creation");
                 SM_Component.Create();
             }
             else
@@ -111,7 +111,7 @@ namespace MelonLoader.Support
         {
             if (libraryName == "GameAssembly")
             {
-                string gameAssemblyPath = Path.Combine(MelonEnvironment.GameExecutablePath, "Contents", "Frameworks", $"{libraryName}.dylib");
+                string gameAssemblyPath = Path.Combine(AniiModEnvironment.GameExecutablePath, "Contents", "Frameworks", $"{libraryName}.dylib");
                 return System.Runtime.InteropServices.NativeLibrary.Load(gameAssemblyPath);
             }
             return IntPtr.Zero;
@@ -188,18 +188,18 @@ namespace MelonLoader.Support
 
                 setOutMethod.Invoke(null, new[] { nullStreamWriter });
             }
-            catch (Exception ex) { MelonLogger.Warning($"Console Cleaner Failed: {ex}"); }
+            catch (Exception ex) { AniiModLogger.Warning($"Console Cleaner Failed: {ex}"); }
         }
     }
 
-    internal sealed class MelonDetourProvider : IDetourProvider
+    internal sealed class AniiModDetourProvider : IDetourProvider
     {
         public IDetour Create<TDelegate>(nint original, TDelegate target) where TDelegate : Delegate
         {
-            return new MelonDetour(original, target);
+            return new AniiModDetour(original, target);
         }
 
-        private sealed class MelonDetour : IDetour
+        private sealed class AniiModDetour : IDetour
         {
             private nint _detourFrom;
             private nint _originalPtr;
@@ -217,7 +217,7 @@ namespace MelonLoader.Support
             public nint Detour => _targetPtr;
             public nint OriginalTrampoline => _originalPtr;
             
-            public MelonDetour(nint detourFrom, Delegate target)
+            public AniiModDetour(nint detourFrom, Delegate target)
             {
                 _detourFrom = detourFrom;
                 _target = target;
@@ -276,7 +276,7 @@ namespace MelonLoader.Support
     internal class InteropLogger
         : Microsoft.Extensions.Logging.ILogger
     {
-        private MelonLogger.Instance _logger = new("Il2CppInterop");
+        private AniiModLogger.Instance _logger = new("Il2CppInterop");
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
             Func<TState, Exception, string> formatter)
@@ -286,7 +286,7 @@ namespace MelonLoader.Support
             {
                 case LogLevel.Debug:
                 case LogLevel.Trace:
-                    MelonDebug.Msg(formattedTxt);
+                    AniiModDebug.Msg(formattedTxt);
                     break;
 
                 case LogLevel.Critical:
@@ -309,7 +309,7 @@ namespace MelonLoader.Support
         public bool IsEnabled(LogLevel logLevel)
             => logLevel switch
             {
-                LogLevel.Debug or LogLevel.Trace => MelonDebug.IsEnabled(),
+                LogLevel.Debug or LogLevel.Trace => AniiModDebug.IsEnabled(),
                 _ => true
             };
 

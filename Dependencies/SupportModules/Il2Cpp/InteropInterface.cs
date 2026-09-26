@@ -1,4 +1,4 @@
-﻿using Il2CppInterop.Common;
+using Il2CppInterop.Common;
 using Il2CppInterop.Common.Attributes;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.Injection;
@@ -6,7 +6,7 @@ using Il2CppInterop.Runtime.InteropTypes;
 using System;
 using System.Reflection;
 
-namespace MelonLoader.Support
+namespace AniiModLoader.Support
 {
     internal class InteropInterface : InteropSupport.Interface
     {

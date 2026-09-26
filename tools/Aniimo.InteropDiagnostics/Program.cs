@@ -10,9 +10,11 @@ using Il2CppInterop.Generator;
 using Il2CppInterop.Generator.Runners;
 using Microsoft.Extensions.Logging;
 
+if (args.Length == 1 && args[0] == "--self-test") { CompatibilityTests.Run(); return; }
+
 if (args.Length == 3 && args[0] == "--sanitize")
 {
-    MelonLoader.Il2CppAssemblyGenerator.Packages.PrebakedAssemblySanitizer.Normalize(args[1], args[2], Console.WriteLine);
+    AniiModLoader.Il2CppAssemblyGenerator.Packages.PrebakedAssemblySanitizer.Normalize(args[1], args[2], Console.WriteLine);
     return;
 }
 if (args.Length < 3) throw new ArgumentException("Usage: <input> <GameAssembly> <output> [--scan] [--parallel] [--no-xref], or --sanitize <input> <output>");
@@ -29,6 +31,19 @@ var inputAssemblies = Directory.GetFiles(input, "*.dll")
     .Select(f => { resolver.Add(f); return f; })
     .Select(f => f.Assembly ?? throw new InvalidDataException($"Module {f.Name} has no assembly"))
     .ToList();
+
+if (args.Contains("--assert-branding"))
+{
+    foreach (var assembly in inputAssemblies)
+    {
+        if (assembly.Name!.ToString().StartsWith("MelonLoader", StringComparison.OrdinalIgnoreCase)) throw new Exception("Old assembly identity");
+        if (!assembly.Name.ToString().StartsWith("AniiMod", StringComparison.Ordinal)) continue;
+        foreach (var type in assembly.ManifestModule!.GetAllTypes())
+            if (type.Namespace?.ToString().StartsWith("MelonLoader", StringComparison.OrdinalIgnoreCase) == true) throw new Exception($"Old namespace: {type.FullName}");
+    }
+    Console.WriteLine("ASSEMBLY BRANDING OK");
+    return;
+}
 
 if (args.Contains("--inventory"))
 {

@@ -1,9 +1,9 @@
-﻿using Il2CppInterop.Runtime;
+using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppInterop.Runtime.Runtime;
-using MelonLoader;
-using MelonLoader.InternalUtils;
+using AniiModLoader;
+using AniiModLoader.InternalUtils;
 using System;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;

@@ -22,7 +22,7 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v8
         with:
-          name: MelonLoader.Thunderstore
+          name: AniiModLoader.Thunderstore
           path: ./compiled_thunderstore/
       - name: Package Artifact into Zip Archive
         run: |

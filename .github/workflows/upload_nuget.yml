@@ -16,7 +16,7 @@ jobs:
       - name: Download NuGet Artifact
         uses: actions/download-artifact@v8
         with:
-          name: MelonLoader.NuGet
+          name: AniiModLoader.NuGet
           path: ./compiled_release/
       
       - name: Publish NuGet Package

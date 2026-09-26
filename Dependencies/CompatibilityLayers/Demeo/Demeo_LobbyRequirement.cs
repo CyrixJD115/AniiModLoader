@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace MelonLoader
+namespace AniiModLoader
 {
     [AttributeUsage(AttributeTargets.Assembly)]
     public class Demeo_LobbyRequirement : Attribute

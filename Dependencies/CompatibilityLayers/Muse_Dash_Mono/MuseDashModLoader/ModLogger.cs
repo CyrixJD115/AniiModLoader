@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using MelonLoader;
+using AniiModLoader;
 
 namespace ModHelper
 {
@@ -15,7 +15,7 @@ namespace ModHelper
 
         public static void AddLog(string className, string methodName, object obj)
         {
-            MelonLogger.Msg($"[{className}:{methodName}]: {obj}");
+            AniiModLogger.Msg($"[{className}:{methodName}]: {obj}");
         }
     }
 }

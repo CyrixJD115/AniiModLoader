@@ -1,0 +1,5 @@
+<linker>
+    <assembly fullname="AniiModLoader.Bootstrap">
+        <type fullname="AniiModLoader.LoaderConfig" preserve="all" />
+    </assembly>
+</linker>

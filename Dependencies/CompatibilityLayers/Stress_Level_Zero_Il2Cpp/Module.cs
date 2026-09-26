@@ -1,11 +1,11 @@
-﻿using MelonLoader.Modules;
+using AniiModLoader.Modules;
 using System.Collections.Generic;
 
-[assembly: MelonLoader.PatchShield]
+[assembly: AniiModLoader.PatchShield]
 
-namespace MelonLoader.CompatibilityLayers
+namespace AniiModLoader.CompatibilityLayers
 {
-    internal class SLZ_Module : MelonModule
+    internal class SLZ_Module : AniiModModule
     {
         private static bool HasGotLoadingSceneIndex = false;
         private static int LoadingSceneIndex = -9;
@@ -21,8 +21,8 @@ namespace MelonLoader.CompatibilityLayers
             if (!CompatibleGames.ContainsKey(InternalUtils.UnityInformationHandler.GameName))
                 return;
 
-            MelonEvents.OnSceneWasLoaded.Subscribe(OnSceneLoad, int.MinValue);
-            MelonEvents.OnSceneWasInitialized.Subscribe(OnSceneInit, int.MinValue);
+            AniiModEvents.OnSceneWasLoaded.Subscribe(OnSceneLoad, int.MinValue);
+            AniiModEvents.OnSceneWasInitialized.Subscribe(OnSceneInit, int.MinValue);
         }
 
         private static void OnSceneLoad(int buildIndex, string name)
@@ -49,22 +49,22 @@ namespace MelonLoader.CompatibilityLayers
                 return;
 
             PostSceneEvent();
-            MelonBase.SendMessageAll("OnLoadingScreen");
-            MelonBase.SendMessageAll($"{InternalUtils.UnityInformationHandler.GameName}_OnLoadingScreen");
+            AniiModBase.SendMessageAll("OnLoadingScreen");
+            AniiModBase.SendMessageAll($"{InternalUtils.UnityInformationHandler.GameName}_OnLoadingScreen");
         }
 
-        private static MelonEvent<int, string>.MelonEventSubscriber[] SceneInitBackup;
+        private static AniiModEvent<int, string>.AniiModEventSubscriber[] SceneInitBackup;
         private static void PreSceneEvent()
         {
-            SceneInitBackup = MelonEvents.OnSceneWasInitialized.GetSubscribers();
-            MelonEvents.OnSceneWasInitialized.UnsubscribeAll();
-            MelonEvents.OnSceneWasInitialized.Subscribe(OnSceneInit, int.MinValue);
+            SceneInitBackup = AniiModEvents.OnSceneWasInitialized.GetSubscribers();
+            AniiModEvents.OnSceneWasInitialized.UnsubscribeAll();
+            AniiModEvents.OnSceneWasInitialized.Subscribe(OnSceneInit, int.MinValue);
         }
         private static void PostSceneEvent()
         {
-            MelonEvents.OnSceneWasInitialized.UnsubscribeAll();
+            AniiModEvents.OnSceneWasInitialized.UnsubscribeAll();
             foreach (var sub in SceneInitBackup)
-                MelonEvents.OnSceneWasInitialized.Subscribe(sub.del, sub.priority, sub.unsubscribeOnFirstInvocation);
+                AniiModEvents.OnSceneWasInitialized.Subscribe(sub.del, sub.priority, sub.unsubscribeOnFirstInvocation);
             SceneInitBackup = null;
         }
     }

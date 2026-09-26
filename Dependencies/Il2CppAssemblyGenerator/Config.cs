@@ -1,21 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using MelonLoader.Preferences;
+using AniiModLoader.Preferences;
 
-namespace MelonLoader.Il2CppAssemblyGenerator
+namespace AniiModLoader.Il2CppAssemblyGenerator
 {
     internal class Config
     {
         private static string FilePath;
-        private static MelonPreferences_ReflectiveCategory Category;
+        private static AniiModPreferences_ReflectiveCategory Category;
         internal static AssemblyGeneratorConfiguration Values;
 
         internal static void Initialize()
         {
-            FilePath = Path.Combine(Core.BasePath, "Config.cfg");
+            FilePath = Compatibility.LoaderPaths.MigrateConfig(Core.BasePath, "AniiModGenerator.cfg", "Config.cfg");
 
-            Category = MelonPreferences.CreateCategory<AssemblyGeneratorConfiguration>("Il2CppAssemblyGenerator");
+            Category = AniiModPreferences.CreateCategory<AssemblyGeneratorConfiguration>("Il2CppAssemblyGenerator");
             Category.SetFilePath(FilePath, printmsg: false);
             Category.DestroyFileWatcher();
 

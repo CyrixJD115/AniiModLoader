@@ -15,12 +15,12 @@
 		
         <PortablePdbToMdbTarget>netstandard2.0</PortablePdbToMdbTarget>
 		
-        <Authors>Lava Gang</Authors>
-        <Company>discord.gg/2Wn3N2P</Company>
-        <Copyright>Copyright (c) 2020 - 2025 Lava Gang</Copyright>
-        <Description>The World's First Universal Mod Loader for Unity Games compatible with both Il2Cpp and Mono.</Description>
+        <Authors>AniiModLoader contributors</Authors>
+        <Company>AniiModLoader contributors</Company>
+        <Copyright>Copyright (c) 2026 AniiModLoader contributors; original portions Copyright (c) 2020 - 2025 Lava Gang</Copyright>
+        <Description>An Aniimo-focused Unity IL2CPP mod loader.</Description>
 
-        <RepositoryUrl>https://github.com/LavaGang/MelonLoader</RepositoryUrl>
+        <RepositoryUrl>https://github.com/CyrixJD115/AniiModLoader</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
 
         <LangVersion>Latest</LangVersion>
@@ -127,4 +127,7 @@
     <Target Name="SymbolsConvert" Condition="'$(TargetFramework)' == 'net35'" AfterTargets="AfterBuild">
         <PortablePdbToMdb AssemblyPath="$(TargetPath)" />
     </Target>
+    <ItemGroup>
+        <Compile Condition="'$(MSBuildProjectName)' == 'AniiModLoader' Or '$(MSBuildProjectName)' == 'AniiModLoader.Bootstrap'" Include="$(MSBuildThisFileDirectory)Shared/*.cs" Link="Compatibility/%(Filename)%(Extension)" />
+    </ItemGroup>
 </Project>

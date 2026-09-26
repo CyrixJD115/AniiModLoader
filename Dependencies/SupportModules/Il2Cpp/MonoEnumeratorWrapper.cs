@@ -2,7 +2,7 @@ using Il2CppInterop.Runtime.Injection;
 using System;
 using System.Collections;
 
-namespace MelonLoader.Support
+namespace AniiModLoader.Support
 {
     public class MonoEnumeratorWrapper : Il2CppSystem.Object /*, IEnumerator */
     {
@@ -39,12 +39,12 @@ namespace MelonLoader.Support
                 return enumerator.MoveNext();
             } catch(Exception e)
             {
-                var melon = MelonUtils.GetMelonFromStackTrace(new System.Diagnostics.StackTrace(e), true);
+                var aniimod = AniiModUtils.GetAniiModFromStackTrace(new System.Diagnostics.StackTrace(e), true);
 
-                if (melon != null)
-                    melon.LoggerInstance.Error("Unhandled exception in coroutine. It will not continue executing.", e);
+                if (aniimod != null)
+                    aniimod.LoggerInstance.Error("Unhandled exception in coroutine. It will not continue executing.", e);
                 else
-                    MelonLogger.Error("[Error: Could not identify source] Unhandled exception in coroutine. It will not continue executing.", e);
+                    AniiModLogger.Error("[Error: Could not identify source] Unhandled exception in coroutine. It will not continue executing.", e);
 
                 return false;
             }

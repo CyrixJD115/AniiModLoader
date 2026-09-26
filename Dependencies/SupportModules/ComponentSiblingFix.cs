@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 #if SM_Il2Cpp
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 #endif
 
-namespace MelonLoader.Support
+namespace AniiModLoader.Support
 {
     internal static class ComponentSiblingFix
     {
@@ -32,8 +32,8 @@ namespace MelonLoader.Support
 
         private static void LogError(string cat, Exception ex)
         {
-            MelonLogger.Warning($"Exception while {cat}: {ex}");
-            MelonLogger.Warning("Melon Events might run before some MonoBehaviour Events");
+            AniiModLogger.Warning($"Exception while {cat}: {ex}");
+            AniiModLogger.Warning("AniiMod Events might run before some MonoBehaviour Events");
         }
 
         private static bool FindMethod()

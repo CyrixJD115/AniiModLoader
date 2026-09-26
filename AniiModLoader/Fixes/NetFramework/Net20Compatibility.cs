@@ -1,0 +1,40 @@
+#if NET35
+using HarmonyLib;
+using System;
+using System.Text.RegularExpressions;
+using AniiModLoader.Logging;
+
+namespace AniiModLoader.Fixes.NetFramework
+{
+    internal static class Net20Compatibility
+    {
+        public static void TryInstall()
+        {
+            if (Environment.Version.Major != 2)
+                return;
+
+            try
+            {
+                AniiModEvents.OnPreInitialization.Subscribe(OnPreInit, unsubscribeOnFirstInvocation: true);
+
+                Core.HarmonyInstance.Patch(AccessTools.Constructor(typeof(Regex), [typeof(string), typeof(RegexOptions)]), new(typeof(Net20Compatibility), nameof(RegexCtor)));
+            }
+            catch (Exception ex)
+            {
+                AniiModLogger.Error(ex);
+            }
+        }
+
+        private static void OnPreInit()
+        {
+            AniiModLogger.MsgDirect(ColorARGB.Yellow, "The current game is running on .NET Framework 2.0, which is obsolete. Some universal AniiMods may run into unexpected errors.");
+        }
+
+        private static void RegexCtor([HarmonyArgument(1)] ref RegexOptions options)
+        {
+            // Compiled regex is not supported and results in an exception
+            options &= ~RegexOptions.Compiled;
+        }
+    }
+}
+#endif

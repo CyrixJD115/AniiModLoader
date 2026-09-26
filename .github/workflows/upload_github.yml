@@ -18,48 +18,48 @@ jobs:
       - name: Download Windows x86 Artifact
         uses: actions/download-artifact@v8
         with:
-          name: MelonLoader.Windows.x86.CI.Release
+          name: AniiModLoader.Windows.x86.CI.Release
           path: ./compiled_release/windows_x86
       - name: Package Windows x86 into Zip Archive
         run: |
           cd compiled_release/windows_x86
-          zip -r ../MelonLoader.x86.zip ./
+          zip -r ../AniiModLoader.x86.zip ./
       
       - name: Download Windows x64 Artifact
         uses: actions/download-artifact@v8
         with:
-          name: MelonLoader.Windows.x64.CI.Release
+          name: AniiModLoader.Windows.x64.CI.Release
           path: ./compiled_release/windows_x64
       - name: Package Windows x64 into Zip Archive
         run: |
           cd compiled_release/windows_x64
-          zip -r ../MelonLoader.x64.zip ./
+          zip -r ../AniiModLoader.x64.zip ./
         
       - name: Download Linux x64 Artifact
         uses: actions/download-artifact@v8
         with:
-          name: MelonLoader.Linux.x64.CI.Release
+          name: AniiModLoader.Linux.x64.CI.Release
           path: ./compiled_release/linux_x64
       - name: Package Linux x64 into Zip Archive
         run: |
           cd compiled_release/linux_x64
-          zip -r ../MelonLoader.Linux.x64.zip  ./
+          zip -r ../AniiModLoader.Linux.x64.zip  ./
         
       - name: Download MacOS x64 Artifact
         uses: actions/download-artifact@v8
         with:
-          name: MelonLoader.macOS.x64.CI.Release
+          name: AniiModLoader.macOS.x64.CI.Release
           path: ./compiled_release/macos_x64
       - name: Package MacOS x64 into Zip Archive
         run: |
           cd compiled_release/macos_x64
-          zip -r ../MelonLoader.macOS.x64.zip  ./
+          zip -r ../AniiModLoader.macOS.x64.zip  ./
           
-      - name: Download MelonLoader Installer
+      - name: Download AniiModLoader Installer
         run: |
-          curl -L https://github.com/LavaGang/MelonLoader.Installer/releases/latest/download/MelonLoader.Installer.exe -o compiled_release/MelonLoader.Installer.exe
-          curl -L https://github.com/LavaGang/MelonLoader.Installer/releases/latest/download/MelonLoader.Installer.Linux -o compiled_release/MelonLoader.Installer.Linux
-          curl -L https://github.com/LavaGang/MelonLoader.Installer/releases/latest/download/MelonLoader.Installer.MacOS.dmg -o compiled_release/MelonLoader.Installer.MacOS.dmg
+          curl -L https://github.com/CyrixJD115/AniiModLoader.Installer/releases/latest/download/AniiModLoader.Installer.exe -o compiled_release/AniiModLoader.Installer.exe
+          curl -L https://github.com/CyrixJD115/AniiModLoader.Installer/releases/latest/download/AniiModLoader.Installer.Linux -o compiled_release/AniiModLoader.Installer.Linux
+          curl -L https://github.com/CyrixJD115/AniiModLoader.Installer/releases/latest/download/AniiModLoader.Installer.MacOS.dmg -o compiled_release/AniiModLoader.Installer.MacOS.dmg
 
       - name: Create Release
         uses: softprops/action-gh-release@v3
@@ -68,10 +68,10 @@ jobs:
           tag: ${{ inputs.TAG }}
           release_name: ${{ inputs.RELEASE_NAME }}
           files: |
-            compiled_release/MelonLoader.x86.zip
-            compiled_release/MelonLoader.x64.zip
-            compiled_release/MelonLoader.Linux.x64.zip
-            compiled_release/MelonLoader.macOS.x64.zip
-            compiled_release/MelonLoader.Installer.exe
-            compiled_release/MelonLoader.Installer.Linux
-            compiled_release/MelonLoader.Installer.MacOS.dmg
+            compiled_release/AniiModLoader.x86.zip
+            compiled_release/AniiModLoader.x64.zip
+            compiled_release/AniiModLoader.Linux.x64.zip
+            compiled_release/AniiModLoader.macOS.x64.zip
+            compiled_release/AniiModLoader.Installer.exe
+            compiled_release/AniiModLoader.Installer.Linux
+            compiled_release/AniiModLoader.Installer.MacOS.dmg

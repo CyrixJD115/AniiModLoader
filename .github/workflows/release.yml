@@ -1,4 +1,4 @@
-name: Release MelonLoader
+name: Release AniiModLoader
 
 run-name: ${{ github.ref_name }} | Release
 
@@ -31,7 +31,7 @@ jobs:
       SKIP_DEBUG: true
       VERSION: ${{ needs.fix_tag_version.outputs.clean_version }}
       PACKAGE_VERSION: ${{ needs.fix_tag_version.outputs.clean_version }}
-      PACKAGE_NAME: MelonLoader
+      PACKAGE_NAME: AniiModLoader
     
   upload:
     name: Upload
@@ -42,5 +42,5 @@ jobs:
       RELEASE_NAME: ${{ github.ref_name }} Open-Beta
       VERSION: ${{ needs.fix_tag_version.outputs.clean_version }}
       PACKAGE_VERSION: ${{ needs.fix_tag_version.outputs.clean_version }}
-      PACKAGE_NAME: MelonLoader
+      PACKAGE_NAME: AniiModLoader
     secrets: inherit

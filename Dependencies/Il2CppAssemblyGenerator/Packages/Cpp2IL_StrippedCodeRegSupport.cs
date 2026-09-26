@@ -1,8 +1,8 @@
-﻿using MelonLoader.Il2CppAssemblyGenerator.Packages.Models;
+using AniiModLoader.Il2CppAssemblyGenerator.Packages.Models;
 using Semver;
 using System.IO;
 
-namespace MelonLoader.Il2CppAssemblyGenerator.Packages
+namespace AniiModLoader.Il2CppAssemblyGenerator.Packages
 {
     internal class Cpp2IL_StrippedCodeRegSupport : PackageBase
     {

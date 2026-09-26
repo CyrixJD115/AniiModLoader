@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 
-namespace MelonLoader.Il2CppAssemblyGenerator
+namespace AniiModLoader.Il2CppAssemblyGenerator
 {
     internal static class FileHandler
     {

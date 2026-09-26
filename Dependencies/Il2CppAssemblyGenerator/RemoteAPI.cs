@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using Semver;
 
-namespace MelonLoader.Il2CppAssemblyGenerator
+namespace AniiModLoader.Il2CppAssemblyGenerator
 {
     internal static class RemoteAPI
     {
@@ -36,11 +36,11 @@ namespace MelonLoader.Il2CppAssemblyGenerator
             string gamename = Regex.Replace(InternalUtils.UnityInformationHandler.GameName, "[^a-zA-Z0-9_.]+", "-", RegexOptions.Compiled).ToLowerInvariant();
 
             HostList = new List<HostInfo> {
-                new HostInfo($"{DefaultHostInfo.Melon.API_URL}{gamename}", DefaultHostInfo.Melon.Contact),
-                new HostInfo($"{DefaultHostInfo.Melon.API_URL_1}{gamename}", DefaultHostInfo.Melon.Contact),
-                new HostInfo($"{DefaultHostInfo.Melon.API_URL_2}{gamename}", DefaultHostInfo.Melon.Contact),
-                new HostInfo($"{DefaultHostInfo.Melon.API_URL_SAMBOY}{gamename}", DefaultHostInfo.Melon.Contact),
-                new HostInfo($"{DefaultHostInfo.Melon.API_URL_DUBYADUDE}{gamename}", DefaultHostInfo.Melon.Contact),
+                new HostInfo($"{DefaultHostInfo.AniiMod.API_URL}{gamename}", DefaultHostInfo.AniiMod.Contact),
+                new HostInfo($"{DefaultHostInfo.AniiMod.API_URL_1}{gamename}", DefaultHostInfo.AniiMod.Contact),
+                new HostInfo($"{DefaultHostInfo.AniiMod.API_URL_2}{gamename}", DefaultHostInfo.AniiMod.Contact),
+                new HostInfo($"{DefaultHostInfo.AniiMod.API_URL_SAMBOY}{gamename}", DefaultHostInfo.AniiMod.Contact),
+                new HostInfo($"{DefaultHostInfo.AniiMod.API_URL_DUBYADUDE}{gamename}", DefaultHostInfo.AniiMod.Contact),
             };
         }
 
@@ -65,7 +65,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator
                 if (string.IsNullOrEmpty(info.URL) || (info.Func == null))
                     continue;
 
-                MelonDebug.Msg($"ContactURL = {info.URL}");
+                AniiModDebug.Msg($"ContactURL = {info.URL}");
 
                 string Response = null;
                 try
@@ -93,7 +93,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator
                 }
 
                 var isResponseNull = string.IsNullOrEmpty(Response);
-                MelonDebug.Msg($"Response = {(isResponseNull ? "null" : Response) }");
+                AniiModDebug.Msg($"Response = {(isResponseNull ? "null" : Response) }");
                 if (isResponseNull)
                     break;
 
@@ -111,14 +111,14 @@ namespace MelonLoader.Il2CppAssemblyGenerator
 
         private class DefaultHostInfo
         {
-            internal static class Melon
+            internal static class AniiMod
             {
                 internal static string API_VERSION = "v1";
-                internal static string API_URL = $"https://api.melonloader.com/api/{API_VERSION}/game/";
-                internal static string API_URL_1 = $"https://api-1.melonloader.com/api/{API_VERSION}/game/";
-                internal static string API_URL_2 = $"https://api-2.melonloader.com/api/{API_VERSION}/game/";
-                internal static string API_URL_SAMBOY = $"https://melon.samboy.dev/api/{API_VERSION}/game/";
-                internal static string API_URL_DUBYADUDE = $"https://melon.dubyadu.de/api/{API_VERSION}/game/";
+                internal static string API_URL = $"https://api.aniimod.com/api/{API_VERSION}/game/";
+                internal static string API_URL_1 = $"https://api-1.aniimod.com/api/{API_VERSION}/game/";
+                internal static string API_URL_2 = $"https://api-2.aniimod.com/api/{API_VERSION}/game/";
+                internal static string API_URL_SAMBOY = $"https://aniimod.samboy.dev/api/{API_VERSION}/game/";
+                internal static string API_URL_DUBYADUDE = $"https://aniimod.dubyadu.de/api/{API_VERSION}/game/";
 
                 internal static InfoStruct Contact(string response_str)
                 {

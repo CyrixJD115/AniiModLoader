@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using Mono.Cecil;
 
-namespace MelonLoader.Il2CppAssemblyGenerator.Packages
+namespace AniiModLoader.Il2CppAssemblyGenerator.Packages
 {
     // Repairs only the working copy consumed by Il2CppInterop. Never write to
     // PrebakedDummyDll or to the installed game metadata/binary.

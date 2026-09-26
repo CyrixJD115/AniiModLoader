@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Semver;
 
-namespace MelonLoader.Il2CppAssemblyGenerator.Packages
+namespace AniiModLoader.Il2CppAssemblyGenerator.Packages
 {
     internal class Cpp2IL_NetFramework : Models.ExecutablePackage
     {
@@ -51,7 +51,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
         private bool ExecuteNew()
         {
             if (Execute([
-                MelonDebug.IsEnabled() ? "--verbose" : string.Empty,
+                AniiModDebug.IsEnabled() ? "--verbose" : string.Empty,
 
                 "--game-path",
                 "\"" + Path.GetDirectoryName(Core.GameAssemblyPath) + "\"",
@@ -81,7 +81,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
         private bool ExecuteOld()
         {
             if (Execute([
-                MelonDebug.IsEnabled() ? "--verbose" : string.Empty,
+                AniiModDebug.IsEnabled() ? "--verbose" : string.Empty,
 
                 "--game-path",
                 "\"" + Path.GetDirectoryName(Core.GameAssemblyPath) + "\"",

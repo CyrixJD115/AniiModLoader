@@ -1,24 +1,24 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using IllusionPlugin;
 using IllusionInjector;
-using MelonLoader.Modules;
-using MelonLoader.Resolver;
+using AniiModLoader.Modules;
+using AniiModLoader.Resolver;
 
-[assembly: MelonLoader.PatchShield]
+[assembly: AniiModLoader.PatchShield]
 
-namespace MelonLoader.CompatibilityLayers
+namespace AniiModLoader.CompatibilityLayers
 {
-    internal class IPA_Module : MelonModule
+    internal class IPA_Module : AniiModModule
     {
         public override void OnInitialize()
         {
 			// To-Do:
 			// Detect if IPA is already Installed
 			// Point AssemblyResolveInfo to already installed IPA Assembly
-			// Point GetResolverFromAssembly to Dummy MelonCompatibilityLayer.Resolver
+			// Point GetResolverFromAssembly to Dummy AniiModCompatibilityLayer.Resolver
 
 			string[] assembly_list =
 			{
@@ -27,12 +27,12 @@ namespace MelonLoader.CompatibilityLayers
 			};
 			Assembly base_assembly = typeof(IPA_Module).Assembly;
 			foreach (string assemblyName in assembly_list)
-                MelonAssemblyResolver.GetAssemblyResolveInfo(assemblyName).Override = base_assembly;
+                AniiModAssemblyResolver.GetAssemblyResolveInfo(assemblyName).Override = base_assembly;
 
-			MelonAssembly.CustomMelonResolvers += Resolve;
+			AniiModAssembly.CustomAniiModResolvers += Resolve;
 		}
 
-        private ResolvedMelons Resolve(Assembly asm)
+        private ResolvedAniiMods Resolve(Assembly asm)
 		{
 			IEnumerable<Type> pluginTypes = asm.GetValidTypes(x =>
 			{
@@ -40,36 +40,36 @@ namespace MelonLoader.CompatibilityLayers
 				return (interfaces != null) && interfaces.Any() && interfaces.Contains(typeof(IPlugin)); // To-Do: Change to Type Reflection based on Setup
 			});
 			if ((pluginTypes == null) || !pluginTypes.Any())
-				return new ResolvedMelons(null, null);
+				return new ResolvedAniiMods(null, null);
 
-			var melons = new List<MelonBase>();
-			var rotten = new List<RottenMelon>();
+			var aniimods = new List<AniiModBase>();
+			var rotten = new List<RottenAniiMod>();
 			foreach (var t in pluginTypes)
             {
-				var mel = LoadPlugin(asm, t, out RottenMelon rm);
+				var mel = LoadPlugin(asm, t, out RottenAniiMod rm);
 				if (mel != null)
-					melons.Add(mel);
+					aniimods.Add(mel);
 				else
 					rotten.Add(rm);
             }
-			return new ResolvedMelons(melons.ToArray(), rotten.ToArray());
+			return new ResolvedAniiMods(aniimods.ToArray(), rotten.ToArray());
 		}
 
-		private MelonBase LoadPlugin(Assembly asm, Type pluginType, out RottenMelon rottenMelon)
+		private AniiModBase LoadPlugin(Assembly asm, Type pluginType, out RottenAniiMod rottenAniiMod)
 		{
-			rottenMelon = null;
+			rottenAniiMod = null;
 			IPlugin pluginInstance;
 			try
 			{ pluginInstance = Activator.CreateInstance(pluginType) as IPlugin; }
             catch (Exception ex)
             {
-				rottenMelon = new RottenMelon(pluginType, "Failed to create a new instance of the IPA Plugin.", ex);
+				rottenAniiMod = new RottenAniiMod(pluginType, "Failed to create a new instance of the IPA Plugin.", ex);
 				return null;
             }
 
-			MelonProcessAttribute[] processAttrs = null;
+			AniiModProcessAttribute[] processAttrs = null;
 			if (pluginInstance is IEnhancedPlugin enPl)
-				processAttrs = enPl.Filter?.Select(x => new MelonProcessAttribute(x)).ToArray();
+				processAttrs = enPl.Filter?.Select(x => new AniiModProcessAttribute(x)).ToArray();
 
 			string pluginName = pluginInstance.Name;
 			if (string.IsNullOrEmpty(pluginName))
@@ -81,11 +81,11 @@ namespace MelonLoader.CompatibilityLayers
 			if (string.IsNullOrEmpty(plugin_version) || plugin_version.Equals("0.0.0.0"))
 				plugin_version = "1.0.0.0";
 
-			var melon = MelonBase.CreateWrapper<IPAPluginWrapper>(pluginName, null, plugin_version, processes: processAttrs);
+			var aniimod = AniiModBase.CreateWrapper<IPAPluginWrapper>(pluginName, null, plugin_version, processes: processAttrs);
 
-			melon.pluginInstance = pluginInstance;
+			aniimod.pluginInstance = pluginInstance;
 			PluginManager._Plugins.Add(pluginInstance);
-			return melon;
+			return aniimod;
 		}
 	}
 }

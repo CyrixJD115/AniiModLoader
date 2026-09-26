@@ -1,16 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
-namespace MelonLoader.Support
+namespace AniiModLoader.Support
 {
     internal class SupportModule_To : ISupportModule_To
     {
         public object StartCoroutine(IEnumerator coroutine)
         {
-            if (!MelonCoroutines._hasProcessed
+            if (!AniiModCoroutines._hasProcessed
                 || (Main.component == null))
             {
-                MelonCoroutines._queue.Add(coroutine);
+                AniiModCoroutines._queue.Add(coroutine);
                 return coroutine;
             }
 
@@ -23,10 +23,10 @@ namespace MelonLoader.Support
 
         public void StopCoroutine(object coroutineToken)
         {
-            if (!MelonCoroutines._hasProcessed
+            if (!AniiModCoroutines._hasProcessed
                 || (Main.component == null))
             {
-                MelonCoroutines._queue.Remove(coroutineToken as IEnumerator);
+                AniiModCoroutines._queue.Remove(coroutineToken as IEnumerator);
                 return;
             }
 

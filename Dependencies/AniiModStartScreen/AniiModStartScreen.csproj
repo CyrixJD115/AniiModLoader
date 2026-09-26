@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>$(MonoTarget);$(DotNetTarget)</TargetFrameworks>
+        <RootNamespace>AniiModLoader.AniiModStartScreen</RootNamespace>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <OutputPath>$(MLOutDir)/AniiModLoader</OutputPath>
+        <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+        <DebugType>portable</DebugType>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)\AniiModLoader\AniiModLoader.csproj" Private="false" />
+		<PackageReference Include="AssetRipper.VersionUtilities" Version="1.5.0" ExcludeAssets="Runtime" />
+		<PackageReference Include="AssetRipper.Primitives" Version="3.2.0" ExcludeAssets="Runtime" />
+        <PackageReference Include="Samboy063.Tomlet" Version="$(TomletVersion)">
+            <ExcludeAssets>Runtime</ExcludeAssets>
+        </PackageReference>
+    </ItemGroup>
+</Project>

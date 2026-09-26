@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Reflection;
-using MelonLoader.Support.Preferences;
+using AniiModLoader.Support.Preferences;
 using UnityEngine;
 
-[assembly: MelonLoader.PatchShield]
+[assembly: AniiModLoader.PatchShield]
 
-namespace MelonLoader.Support
+namespace AniiModLoader.Support
 {
     internal static class Main
     {
@@ -22,8 +22,8 @@ namespace MelonLoader.Support
                 out MethodInfo sceneUnloaded);
             if (sceneLoaded == null)
             {
-                MelonLogger.Warning("Failed to find Internal_SceneLoaded method");
-                MelonLogger.Warning("Falling back to SupportModule Component Creation");
+                AniiModLogger.Warning("Failed to find Internal_SceneLoaded method");
+                AniiModLogger.Warning("Falling back to SupportModule Component Creation");
                 SM_Component.Create();
             }
             else

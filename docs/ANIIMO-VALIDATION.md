@@ -66,7 +66,7 @@ Two later failures become visible after Pass12:
 * Export-name map: **not recovered/verified**. Do not substitute guessed names.
 * Branding rename and optimizations gated on boot validation: **pending**.
 
-The official MelonLoader 0.7.3 x64 archive was downloaded and verified against
+The official AniiModLoader 0.7.3 x64 archive was downloaded and verified against
 GitHub's SHA-256 digest, but does not replace this fork or supply game-derived
 artifacts. No upstream bootstrap was deployed into the game.
 

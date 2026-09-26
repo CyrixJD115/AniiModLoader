@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using AsmResolver.DotNet;
 using AsmResolver.DotNet.Serialized;
 
-namespace MelonLoader.Il2CppAssemblyGenerator.Packages
+namespace AniiModLoader.Il2CppAssemblyGenerator.Packages
 {
     internal class Il2CppInterop : Models.ExecutablePackage
     {
@@ -101,7 +101,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
         {
             if (logLevel is LogLevel.Debug or LogLevel.Trace)
             {
-                MelonDebug.Msg(formatter(state, exception));
+                AniiModDebug.Msg(formatter(state, exception));
                 return;
             }
             
@@ -112,7 +112,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
         {
             return logLevel switch
             {
-                LogLevel.Debug or LogLevel.Trace => MelonDebug.IsEnabled(),
+                LogLevel.Debug or LogLevel.Trace => AniiModDebug.IsEnabled(),
                 _ => true
             };
         }

@@ -1,15 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>$(DotNetTarget)</TargetFramework>
-        <RootNamespace>MelonLoader.Il2CppAssemblyGenerator</RootNamespace>
+        <RootNamespace>AniiModLoader.Il2CppAssemblyGenerator</RootNamespace>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-        <OutputPath>$(MLOutDir)/MelonLoader/Dependencies/Il2CppAssemblyGenerator</OutputPath>
+        <OutputPath>$(MLOutDir)/AniiModLoader/Dependencies/Il2CppAssemblyGenerator</OutputPath>
         <DebugType>embedded</DebugType>
         <PreserveCompilationContext>false</PreserveCompilationContext>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="$(SolutionDir)\MelonLoader\MelonLoader.csproj" Private="false" />
+        <ProjectReference Include="$(SolutionDir)\AniiModLoader\AniiModLoader.csproj" Private="false" />
         <PackageReference Include="AssetRipper.Primitives" Version="$(AssetRipperVersion)" ExcludeAssets="Runtime" />
         <PackageReference Include="Iced" Version="$(IcedVersion)" ExcludeAssets="Runtime" />
         <PackageReference Include="Il2CppInterop.Generator" Version="$(Il2CppInteropVersion)" ExcludeAssets="Runtime" />

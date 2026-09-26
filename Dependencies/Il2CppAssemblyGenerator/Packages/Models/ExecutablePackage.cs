@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace MelonLoader.Il2CppAssemblyGenerator.Packages.Models
+namespace AniiModLoader.Il2CppAssemblyGenerator.Packages.Models
 {
     internal class ExecutablePackage : PackageBase
     {
@@ -108,7 +108,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages.Models
         
         private static void SetProcessId(int id)
         {
-            //MelonLogger.Warning($"TODO: SetProcessId({id})");
+            //AniiModLogger.Warning($"TODO: SetProcessId({id})");
         }
         
 #if LINUX// user permissions

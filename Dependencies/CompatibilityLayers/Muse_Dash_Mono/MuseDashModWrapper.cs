@@ -1,10 +1,10 @@
 using ModHelper;
 
-namespace MelonLoader
+namespace AniiModLoader
 {
-    internal class MuseDashModWrapper : MelonMod
+    internal class MuseDashModWrapper : AniiModMod
     {
         internal IMod modInstance;
-        public override void OnInitializeMelon() => modInstance.DoPatching();
+        public override void OnInitializeAniiMod() => modInstance.DoPatching();
     }
 }

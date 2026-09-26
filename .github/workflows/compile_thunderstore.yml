@@ -22,13 +22,13 @@ jobs:
       - name: Download Windows x64 Artifact
         uses: actions/download-artifact@v8
         with:
-          name: MelonLoader.Windows.x64.CI.Release
+          name: AniiModLoader.Windows.x64.CI.Release
           path: ./compiled_release/thunderstore
           
       - name: Copy Missing Files
         run: |
           cp icon.png compiled_release/thunderstore/icon.png
-          cp compiled_release/thunderstore/MelonLoader/Documentation/README.md compiled_release/thunderstore/README.md
+          cp compiled_release/thunderstore/AniiModLoader/Documentation/README.md compiled_release/thunderstore/README.md
           
       - name: Generate manifest.json
         run: |
@@ -45,5 +45,5 @@ jobs:
       - name: Upload Thunderstore Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: MelonLoader.Thunderstore
+          name: AniiModLoader.Thunderstore
           path: compiled_release/thunderstore

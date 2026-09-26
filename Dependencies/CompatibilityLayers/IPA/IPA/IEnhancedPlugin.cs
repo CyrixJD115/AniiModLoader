@@ -1,4 +1,4 @@
-﻿namespace IllusionPlugin
+namespace IllusionPlugin
 {
 	public interface IEnhancedPlugin : IPlugin
 	{

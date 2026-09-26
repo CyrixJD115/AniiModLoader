@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
-using MelonLoader.Lemons.Cryptography;
+using AniiModLoader.Lemons.Cryptography;
 
-namespace MelonLoader.Il2CppAssemblyGenerator.Packages
+namespace AniiModLoader.Il2CppAssemblyGenerator.Packages
 {
     internal class DeobfuscationMap : Models.PackageBase
     {

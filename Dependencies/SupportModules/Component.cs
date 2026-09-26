@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 #if SM_Il2Cpp
 using System;
@@ -6,7 +6,7 @@ using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.Injection;
 #endif
 
-namespace MelonLoader.Support
+namespace AniiModLoader.Support
 {
     internal class SM_Component : MonoBehaviour
     {
@@ -21,7 +21,7 @@ namespace MelonLoader.Support
             if (Main.component != null)
                 return;
 
-            MelonCoroutines._hasProcessed = false;
+            AniiModCoroutines._hasProcessed = false;
 
             Main.obj = new GameObject();
             DontDestroyOnLoad(Main.obj);
@@ -39,19 +39,19 @@ namespace MelonLoader.Support
 
         private void ProcessCoroutineQueue()
         {
-            MelonCoroutines._hasProcessed = true;
+            AniiModCoroutines._hasProcessed = true;
 
-            if (MelonCoroutines._queue.Count <= 0)
+            if (AniiModCoroutines._queue.Count <= 0)
                 return;
 
-            foreach (var queuedCoroutine in MelonCoroutines._queue)
+            foreach (var queuedCoroutine in AniiModCoroutines._queue)
 #if SM_Il2Cpp
                 StartCoroutine(new Il2CppSystem.Collections.IEnumerator(new MonoEnumeratorWrapper(queuedCoroutine).Pointer));
 #else
                 StartCoroutine(queuedCoroutine);
 #endif
 
-            MelonCoroutines._queue.Clear();
+            AniiModCoroutines._queue.Clear();
         }
 
         void Start()

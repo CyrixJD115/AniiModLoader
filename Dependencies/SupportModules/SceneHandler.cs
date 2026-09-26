@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using HarmonyLib;
@@ -6,7 +6,7 @@ using System.Reflection;
 
 #pragma warning disable CA2013
 
-namespace MelonLoader.Support
+namespace AniiModLoader.Support
 {
     internal static class SceneHandler
     {
@@ -26,18 +26,18 @@ namespace MelonLoader.Support
                 {
                     MethodInfo onSceneLoadPrefix = typeof(SceneHandler).GetMethod("OnSceneLoadPrefix", BindingFlags.Static | BindingFlags.NonPublic);
                     Core.HarmonyInstance.Patch(sceneLoaded, new HarmonyMethod(onSceneLoadPrefix));
-                    MelonDebug.Msg($"Hooked into {sceneLoaded.FullDescription()}");
+                    AniiModDebug.Msg($"Hooked into {sceneLoaded.FullDescription()}");
                 }
-                catch (Exception ex) { MelonLogger.Error($"SceneManager.sceneLoaded override failed: {ex}"); }
+                catch (Exception ex) { AniiModLogger.Error($"SceneManager.sceneLoaded override failed: {ex}"); }
 
             if (sceneUnloaded != null)
                 try
                 {
                     MethodInfo onSceneUnloadPrefix = typeof(SceneHandler).GetMethod("OnSceneUnloadPrefix", BindingFlags.Static | BindingFlags.NonPublic);
                     Core.HarmonyInstance.Patch(sceneUnloaded, new HarmonyMethod(onSceneUnloadPrefix));
-                    MelonDebug.Msg($"Hooked into {sceneUnloaded.FullDescription()}");
+                    AniiModDebug.Msg($"Hooked into {sceneUnloaded.FullDescription()}");
                 }
-                catch (Exception ex) { MelonLogger.Error($"SceneManager.sceneUnloaded override failed: {ex}"); }
+                catch (Exception ex) { AniiModLogger.Error($"SceneManager.sceneUnloaded override failed: {ex}"); }
         }
 
         private static void OnSceneLoadPrefix(Scene __0, LoadSceneMode __1)

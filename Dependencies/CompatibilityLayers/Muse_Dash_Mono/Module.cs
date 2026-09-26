@@ -1,16 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using MelonLoader.Modules;
+using AniiModLoader.Modules;
 using ModHelper;
-using MelonLoader.Resolver;
+using AniiModLoader.Resolver;
 
-[assembly: MelonLoader.PatchShield]
+[assembly: AniiModLoader.PatchShield]
 
-namespace MelonLoader.CompatibilityLayers
+namespace AniiModLoader.CompatibilityLayers
 {
-    internal class Muse_Dash_Mono_Module : MelonModule
+    internal class Muse_Dash_Mono_Module : AniiModModule
     {
         public override void OnInitialize()
         {
@@ -26,12 +26,12 @@ namespace MelonLoader.CompatibilityLayers
             };
             Assembly base_assembly = typeof(Muse_Dash_Mono_Module).Assembly;
             foreach (string assemblyName in assembly_list)
-                MelonAssemblyResolver.GetAssemblyResolveInfo(assemblyName).Override = base_assembly;
+                AniiModAssemblyResolver.GetAssemblyResolveInfo(assemblyName).Override = base_assembly;
 
-            MelonAssembly.CustomMelonResolvers += Resolve;
+            AniiModAssembly.CustomAniiModResolvers += Resolve;
         }
 
-        private ResolvedMelons Resolve(Assembly asm)
+        private ResolvedAniiMods Resolve(Assembly asm)
         {
             IEnumerable<Type> modTypes = asm.GetValidTypes(x =>
             {
@@ -39,30 +39,30 @@ namespace MelonLoader.CompatibilityLayers
                 return (interfaces != null) && interfaces.Any() && interfaces.Contains(typeof(IMod));  // To-Do: Change to Type Reflection based on Setup
             });
             if ((modTypes == null) || !modTypes.Any())
-                return new ResolvedMelons(null, null);
+                return new ResolvedAniiMods(null, null);
 
-            var melons = new List<MelonBase>();
-            var rotten = new List<RottenMelon>();
+            var aniimods = new List<AniiModBase>();
+            var rotten = new List<RottenAniiMod>();
             foreach (var t in modTypes)
             {
-                var mel = LoadMod(asm, t, out RottenMelon rm);
+                var mel = LoadMod(asm, t, out RottenAniiMod rm);
                 if (mel != null)
-                    melons.Add(mel);
+                    aniimods.Add(mel);
                 else
                     rotten.Add(rm);
             }
-            return new ResolvedMelons(melons.ToArray(), rotten.ToArray());
+            return new ResolvedAniiMods(aniimods.ToArray(), rotten.ToArray());
         }
 
-        private MelonBase LoadMod(Assembly asm, Type modType, out RottenMelon rottenMelon)
+        private AniiModBase LoadMod(Assembly asm, Type modType, out RottenAniiMod rottenAniiMod)
         {
-            rottenMelon = null;
+            rottenAniiMod = null;
 
             IMod modInstance;
             try { modInstance = Activator.CreateInstance(modType) as IMod; }
             catch (Exception ex)
             {
-                rottenMelon = new RottenMelon(modType, "Failed to create an instance of the MMDL Mod.", ex);
+                rottenAniiMod = new RottenAniiMod(modType, "Failed to create an instance of the MMDL Mod.", ex);
                 return null;
             }
 
@@ -75,11 +75,11 @@ namespace MelonLoader.CompatibilityLayers
             if (string.IsNullOrEmpty(modVersion) || modVersion.Equals("0.0.0.0"))
                 modVersion = "1.0.0.0";
 
-            var melon = MelonBase.CreateWrapper<MuseDashModWrapper>(modName, null, modVersion);
-            melon.modInstance = modInstance;
+            var aniimod = AniiModBase.CreateWrapper<MuseDashModWrapper>(modName, null, modVersion);
+            aniimod.modInstance = modInstance;
             ModLoader.ModLoader.mods.Add(modInstance);
             ModLoader.ModLoader.LoadDependency(asm);
-            return melon;
+            return aniimod;
         }
     }
 }

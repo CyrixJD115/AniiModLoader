@@ -1,7 +1,7 @@
-﻿using System.IO;
+using System.IO;
 using System.Net.Http;
 
-namespace MelonLoader.Il2CppAssemblyGenerator;
+namespace AniiModLoader.Il2CppAssemblyGenerator;
 
 internal static class Extensions
 {

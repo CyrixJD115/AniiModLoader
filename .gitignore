@@ -386,3 +386,11 @@ x64
 *.o
 *.obj
 *.kate-swp
+
+# Private game-derived regression inputs and outputs
+PrebakedDummyDll/
+AniimoShadow/
+Il2CppNameMap.txt
+*metadata*.dat
+aniimo-loader-kit*
+regression-output/

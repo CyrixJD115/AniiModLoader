@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>$(MonoTarget)</TargetFramework>
-        <RootNamespace>MelonLoader.CompatibilityLayers</RootNamespace>
+        <RootNamespace>AniiModLoader.CompatibilityLayers</RootNamespace>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <OutputPath>$(MLOutDir)/MelonLoader/Dependencies/CompatibilityLayers</OutputPath>
+        <OutputPath>$(MLOutDir)/AniiModLoader/Dependencies/CompatibilityLayers</OutputPath>
         <DebugType>portable</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="$(SolutionDir)\MelonLoader\MelonLoader.csproj" Private="false" />
+        <ProjectReference Include="$(SolutionDir)\AniiModLoader\AniiModLoader.csproj" Private="false" />
     </ItemGroup>
 </Project>

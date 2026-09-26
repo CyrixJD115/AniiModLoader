@@ -1,13 +1,13 @@
-﻿using System.IO;
+using System.IO;
 using System.Net.Http;
-using MelonLoader.Il2CppAssemblyGenerator.Packages;
-using MelonLoader.Il2CppAssemblyGenerator.Packages.Models;
-using MelonLoader.Modules;
-using MelonLoader.Utils;
+using AniiModLoader.Il2CppAssemblyGenerator.Packages;
+using AniiModLoader.Il2CppAssemblyGenerator.Packages.Models;
+using AniiModLoader.Modules;
+using AniiModLoader.Utils;
 
-namespace MelonLoader.Il2CppAssemblyGenerator
+namespace AniiModLoader.Il2CppAssemblyGenerator
 {
-    internal class Core : MelonModule
+    internal class Core : AniiModModule
     {
         internal static string BasePath = null;
         internal static string GameAssemblyPath = null;
@@ -25,7 +25,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator
 
         internal static bool AssemblyGenerationNeeded = false;
 
-        internal static MelonLogger.Instance Logger;
+        internal static AniiModLogger.Instance Logger;
 
         public override void OnInitialize()
         {
@@ -37,20 +37,20 @@ namespace MelonLoader.Il2CppAssemblyGenerator
             AssemblyGenerationNeeded = LoaderConfig.Current.UnityEngine.ForceRegeneration;
 
             string gameAssemblyName = "GameAssembly";
-            if (MelonUtils.IsUnix)
+            if (AniiModUtils.IsUnix)
                 gameAssemblyName += ".so"; 
-            if (MelonUtils.IsWindows)
+            if (AniiModUtils.IsWindows)
                 gameAssemblyName += ".dll";
-            if (MelonUtils.IsMac)
+            if (AniiModUtils.IsMac)
                 gameAssemblyName += ".dylib";
 
 #if OSX
-            GameAssemblyPath = Path.Combine(MelonEnvironment.GameExecutablePath, "Contents", "Frameworks", gameAssemblyName);
+            GameAssemblyPath = Path.Combine(AniiModEnvironment.GameExecutablePath, "Contents", "Frameworks", gameAssemblyName);
 #else
-            GameAssemblyPath = Path.Combine(MelonEnvironment.GameRootDirectory, gameAssemblyName);
+            GameAssemblyPath = Path.Combine(AniiModEnvironment.GameRootDirectory, gameAssemblyName);
 #endif
-            ManagedPath = MelonEnvironment.MelonManagedDirectory;
-            BasePath = MelonEnvironment.Il2CppAssemblyGeneratorDirectory;
+            ManagedPath = AniiModEnvironment.AniiModManagedDirectory;
+            BasePath = AniiModEnvironment.Il2CppAssemblyGeneratorDirectory;
         }
 
         private static int Run()
@@ -61,7 +61,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator
                 RemoteAPI.Contact();
 
             Cpp2IL cpp2IL_netcore = new Cpp2IL();
-            if (MelonUtils.IsWindows
+            if (AniiModUtils.IsWindows
                 && (cpp2IL_netcore.VersionSem < Cpp2IL.NetCoreMinVersion))
                 cpp2il = new Cpp2IL_NetFramework();
             else
@@ -89,8 +89,9 @@ namespace MelonLoader.Il2CppAssemblyGenerator
 
             string CurrentGameAssemblyHash;
             Logger.Msg("Checking GameAssembly...");
-            MelonDebug.Msg($"Last GameAssembly Hash: {Config.Values.GameAssemblyHash}");
-            MelonDebug.Msg($"Current GameAssembly Hash: {CurrentGameAssemblyHash = MelonUtils.ComputeSimpleSHA512Hash(GameAssemblyPath)}");
+            AniiModDebug.Msg($"Last GameAssembly Hash: {Config.Values.GameAssemblyHash}");
+            CurrentGameAssemblyHash = AniiModUtils.ComputeSimpleSHA512Hash(GameAssemblyPath);
+            AniiModDebug.Msg($"Current GameAssembly Hash: {CurrentGameAssemblyHash}");
 
             if (string.IsNullOrEmpty(Config.Values.GameAssemblyHash)
                 || !Config.Values.GameAssemblyHash.Equals(CurrentGameAssemblyHash))
@@ -140,7 +141,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator
             for (int i = 0; i < Config.Values.OldFiles.Count; i++)
             {
                 string filename = Config.Values.OldFiles[i];
-                string filepath = Path.Combine(MelonEnvironment.Il2CppAssembliesDirectory, filename);
+                string filepath = Path.Combine(AniiModEnvironment.Il2CppAssembliesDirectory, filename);
                 if (File.Exists(filepath))
                 {
                     Logger.Msg("Deleting " + filename);
@@ -153,7 +154,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator
         private static void OldFiles_LAM()
         {
             string[] filepathtbl = Directory.GetFiles(il2cppinterop.OutputFolder);
-            string il2CppAssembliesDirectory = MelonEnvironment.Il2CppAssembliesDirectory;
+            string il2CppAssembliesDirectory = AniiModEnvironment.Il2CppAssembliesDirectory;
             for (int i = 0; i < filepathtbl.Length; i++)
             {
                 string filepath = filepathtbl[i];

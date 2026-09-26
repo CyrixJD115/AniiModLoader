@@ -1,6 +1,6 @@
-﻿using System.IO;
+using System.IO;
 
-namespace MelonLoader.Il2CppAssemblyGenerator.Packages.Models
+namespace AniiModLoader.Il2CppAssemblyGenerator.Packages.Models
 {
     internal class PackageBase
     {
@@ -13,7 +13,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages.Models
         internal virtual bool ShouldSetup() => true;
 
         internal virtual bool OnProcess()
-            => FileHandler.Process(FilePath, Destination, MelonUtils.IsWindows ? null : Name);
+            => FileHandler.Process(FilePath, Destination, AniiModUtils.IsWindows ? null : Name);
 
         internal virtual bool Setup()
         {
@@ -57,6 +57,6 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages.Models
             Config.Save();
         }
         
-        internal static void ThrowInternalFailure(string txt) => MelonLogger.ThrowInternalFailure(txt);
+        internal static void ThrowInternalFailure(string txt) => AniiModLogger.ThrowInternalFailure(txt);
     }
 }

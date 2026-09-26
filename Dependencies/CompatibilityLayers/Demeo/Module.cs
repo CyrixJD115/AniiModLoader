@@ -1,16 +1,16 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using MelonLoader.Modules;
+using AniiModLoader.Modules;
 
-[assembly: MelonLoader.PatchShield]
+[assembly: AniiModLoader.PatchShield]
 
-namespace MelonLoader.CompatibilityLayers
+namespace AniiModLoader.CompatibilityLayers
 {
-    internal class Demeo_Module : MelonModule
+    internal class Demeo_Module : AniiModModule
     {
-        private Dictionary<MelonBase, object> ModInformation = new Dictionary<MelonBase, object>();
+        private Dictionary<AniiModBase, object> ModInformation = new Dictionary<AniiModBase, object>();
         private IList ModInfoList;
 
         private Type modInfoType;
@@ -22,9 +22,9 @@ namespace MelonLoader.CompatibilityLayers
 
         public override void OnInitialize()
         {
-            MelonEvents.OnApplicationStart.Subscribe(OnPreAppStart, int.MaxValue);
-            MelonBase.OnMelonRegistered.Subscribe(ParseMelon, int.MaxValue);
-            MelonBase.OnMelonUnregistered.Subscribe(OnUnregister, int.MaxValue);
+            AniiModEvents.OnApplicationStart.Subscribe(OnPreAppStart, int.MaxValue);
+            AniiModBase.OnAniiModRegistered.Subscribe(ParseAniiMod, int.MaxValue);
+            AniiModBase.OnAniiModUnregistered.Subscribe(OnUnregister, int.MaxValue);
         }
 
         private void OnPreAppStart()
@@ -50,81 +50,81 @@ namespace MelonLoader.CompatibilityLayers
                     externalModsField.SetValue(null, ModInfoList);
                 }
 
-                foreach (var m in MelonPlugin.RegisteredMelons)
+                foreach (var m in AniiModPlugin.RegisteredAniiMods)
                 {
                     try
                     {
-                        ParseMelon(m);
+                        ParseAniiMod(m);
                     }
                     catch (Exception ex)
                     {
-                        MelonLogger.Error($"Demeo Integration has thrown an exception: {ex}");
+                        AniiModLogger.Error($"Demeo Integration has thrown an exception: {ex}");
                     }
                 }
 
-                foreach (var m in MelonMod.RegisteredMelons)
+                foreach (var m in AniiModMod.RegisteredAniiMods)
                 {
                     try
                     {
-                        ParseMelon(m);
+                        ParseAniiMod(m);
                     }
                     catch (Exception ex)
                     {
-                        MelonLogger.Error($"Demeo Integration has thrown an exception: {ex}");
+                        AniiModLogger.Error($"Demeo Integration has thrown an exception: {ex}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                MelonLogger.Error($"Demeo Integration has thrown an exception: {ex}");
+                AniiModLogger.Error($"Demeo Integration has thrown an exception: {ex}");
             }
         }
 
-        private void OnUnregister(MelonBase melon)
+        private void OnUnregister(AniiModBase aniimod)
         {
-            if (melon == null)
+            if (aniimod == null)
                 return;
 
-            if (!ModInformation.ContainsKey(melon))
+            if (!ModInformation.ContainsKey(aniimod))
                 return;
 
             try
             {
-                object info = ModInformation[melon];
-                ModInformation.Remove(melon);
+                object info = ModInformation[aniimod];
+                ModInformation.Remove(aniimod);
                 ModInfoList.Remove(info);
             }
             catch (Exception ex)
             {
-                MelonLogger.Error($"Demeo Integration has thrown an exception: {ex}");
+                AniiModLogger.Error($"Demeo Integration has thrown an exception: {ex}");
             }
         }
 
-        private void ParseMelon<T>(T melon) where T : MelonBase
+        private void ParseAniiMod<T>(T aniimod) where T : AniiModBase
         {
 
-            if (melon == null)
+            if (aniimod == null)
                 return;
 
-            if (ModInformation.ContainsKey(melon))
+            if (ModInformation.ContainsKey(aniimod))
                 return;
 
             try
             {
                 object info = Activator.CreateInstance(modInfoType);
 
-                name_field.SetValue(info, melon.Info.Name);
-                version_field.SetValue(info, melon.Info.Version);
-                author_field.SetValue(info, melon.Info.Author);
-                description_field.SetValue(info, melon.Info.DownloadLink);
-                isNetworkCompatible_field.SetValue(info, MelonUtils.PullAttributeFromAssembly<Demeo_LobbyRequirement>(melon.MelonAssembly.Assembly) == null);
+                name_field.SetValue(info, aniimod.Info.Name);
+                version_field.SetValue(info, aniimod.Info.Version);
+                author_field.SetValue(info, aniimod.Info.Author);
+                description_field.SetValue(info, aniimod.Info.DownloadLink);
+                isNetworkCompatible_field.SetValue(info, AniiModUtils.PullAttributeFromAssembly<Demeo_LobbyRequirement>(aniimod.AniiModAssembly.Assembly) == null);
 
-                ModInformation.Add(melon, info);
+                ModInformation.Add(aniimod, info);
                 ModInfoList.Add(info);
             }
             catch (Exception ex)
             {
-                MelonLogger.Error($"Demeo Integration has thrown an exception: {ex}");
+                AniiModLogger.Error($"Demeo Integration has thrown an exception: {ex}");
             }
         }
     }

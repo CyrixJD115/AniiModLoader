@@ -1,4 +1,4 @@
-name: Build MelonLoader
+name: Build AniiModLoader
 
 run-name: 0.7.3${{ github.event_name != 'workflow_dispatch' && format('-ci.{0}', github.run_number) || '' }} | ${{ github.event_name != 'workflow_dispatch' && (github.event.head_commit.message || format('`[PR]` {0}', github.event.pull_request.title)) || 'Manual Build' }}
 
@@ -17,7 +17,7 @@ jobs:
       SKIP_DEBUG: false
       VERSION: "0.7.3${{ github.event_name != 'workflow_dispatch' && format('.{0}', github.run_number) || '' }}"
       PACKAGE_VERSION: "0.7.3${{ github.event_name != 'workflow_dispatch' && format('{0}', github.run_number) || '' }}"
-      PACKAGE_NAME: MelonLoaderNightly
+      PACKAGE_NAME: AniiModLoaderNightly
       
   upload_thunderstore:
     name: Upload to Thunderstore
@@ -26,5 +26,5 @@ jobs:
     uses: ./.github/workflows/upload_thunderstore.yml
     with:
       VERSION: "0.7.3${{ github.event_name != 'workflow_dispatch' && format('{0}', github.run_number) || '' }}"
-      PACKAGE_NAME: MelonLoaderNightly
+      PACKAGE_NAME: AniiModLoaderNightly
     secrets: inherit
