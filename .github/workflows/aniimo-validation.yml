@@ -1,0 +1,32 @@
+name: Build Aniimo Windows artifacts
+on:
+  push:
+    branches: [aniimo-support]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 9.0.x
+      - name: Build patched Windows x64 loader
+        shell: pwsh
+        run: dotnet build -c Release -p:Platform=x64 -p:ForceRID=win-x64 -p:Version=0.7.3
+      - name: Check native bootstrap and managed generator
+        shell: pwsh
+        run: |
+          $files = @('version.dll', 'MelonLoader/net6/MelonLoader.dll', 'MelonLoader/Dependencies/Il2CppAssemblyGenerator/Il2CppAssemblyGenerator.dll')
+          foreach ($file in $files) {
+            $path = Join-Path 'Output/Release/win-x64' $file
+            if (!(Test-Path $path)) { throw "Missing output: $file" }
+            Get-FileHash $path -Algorithm SHA256
+          }
+      - uses: actions/upload-artifact@v7
+        with:
+          name: AniiModLoader-Windows-x64
+          path: Output/Release/win-x64
+          if-no-files-found: error
