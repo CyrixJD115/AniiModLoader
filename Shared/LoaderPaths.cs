@@ -13,7 +13,7 @@ namespace AniiModLoader.Compatibility
         }
 
         // A new binary installation may coexist with old private artifacts. Resolve
-        // those read-only without overwriting either installation or following symlinks.
+        // those read-only without overwriting either installation or moving the original artifacts.
         internal static string ExistingDataPath(string baseDirectory, string relativePath)
         {
             string current = Path.Combine(DataDirectory(baseDirectory), relativePath);

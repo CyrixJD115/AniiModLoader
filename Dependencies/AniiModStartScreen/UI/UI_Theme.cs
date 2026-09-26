@@ -54,7 +54,7 @@ namespace AniiModLoader.AniiModStartScreen
         {
             TomletMain.RegisterMapper(WriteColor, ReadColor);
 
-            FilePath = AniiModLoader.Compatibility.LoaderPaths.MigrateConfig(Core.FolderPath, "AniiModStartScreen.cfg", "MelonStartScreen.cfg");
+            FilePath = AniiModLoader.Compatibility.LoaderPaths.MigrateConfig(Core.FolderPath, "AniiModStartScreen.cfg", "Config.cfg");
             General = CreateCat<cGeneral>(FilePath, nameof(General));
 
             if (!string.IsNullOrEmpty(General.Theme))

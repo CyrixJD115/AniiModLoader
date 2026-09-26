@@ -55,12 +55,6 @@ jobs:
           cd compiled_release/macos_x64
           zip -r ../AniiModLoader.macOS.x64.zip  ./
           
-      - name: Download AniiModLoader Installer
-        run: |
-          curl -L https://github.com/CyrixJD115/AniiModLoader.Installer/releases/latest/download/AniiModLoader.Installer.exe -o compiled_release/AniiModLoader.Installer.exe
-          curl -L https://github.com/CyrixJD115/AniiModLoader.Installer/releases/latest/download/AniiModLoader.Installer.Linux -o compiled_release/AniiModLoader.Installer.Linux
-          curl -L https://github.com/CyrixJD115/AniiModLoader.Installer/releases/latest/download/AniiModLoader.Installer.MacOS.dmg -o compiled_release/AniiModLoader.Installer.MacOS.dmg
-
       - name: Create Release
         uses: softprops/action-gh-release@v3
         with:
@@ -72,6 +66,3 @@ jobs:
             compiled_release/AniiModLoader.x64.zip
             compiled_release/AniiModLoader.Linux.x64.zip
             compiled_release/AniiModLoader.macOS.x64.zip
-            compiled_release/AniiModLoader.Installer.exe
-            compiled_release/AniiModLoader.Installer.Linux
-            compiled_release/AniiModLoader.Installer.MacOS.dmg

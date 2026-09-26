@@ -1,5 +1,5 @@
 env:
-  PACKAGE_DESC: The World's First Universal Mod Loader for Unity Games compatible with both Il2Cpp and Mono
+  PACKAGE_DESC: AniiModLoader - an Aniimo-focused Unity IL2CPP mod loader
   PACKAGE_REPO: https://github.com/${{ github.repository }}
 
 on:

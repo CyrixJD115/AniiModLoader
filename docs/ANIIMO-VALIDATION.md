@@ -1,4 +1,4 @@
-# Aniimo generation validation — 2026-09-26
+# Aniimo generation baseline — 2026-09-26
 
 Base: `aniimo-support`, `c8ada204b0fe4ed8d6dd69961b728bb6cb008178`.
 All existing symbol translation, early-start, no-patch and Wine guards remain.
@@ -64,9 +64,9 @@ Two later failures become visible after Pass12:
   Direct macOS cross-compilation was rejected; CI built the actual native DLL.
 * Main-menu boot, second-boot hash cache, safe mode, test-mod load: **not run**.
 * Export-name map: **not recovered/verified**. Do not substitute guessed names.
-* Branding rename and optimizations gated on boot validation: **pending**.
+* This section records the pre-rename baseline. See `RENAME-VALIDATION.md` for the rename pass.
 
-The official AniiModLoader 0.7.3 x64 archive was downloaded and verified against
+The official upstream MelonLoader 0.7.3 x64 archive was downloaded and verified against
 GitHub's SHA-256 digest, but does not replace this fork or supply game-derived
 artifacts. No upstream bootstrap was deployed into the game.
 

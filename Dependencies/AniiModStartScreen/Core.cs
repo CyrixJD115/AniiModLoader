@@ -47,6 +47,9 @@ namespace AniiModLoader.AniiModStartScreen
             Logger.Msg("Initializing...");
 
             FolderPath = Path.Combine(AniiModEnvironment.UserDataDirectory, "AniiModStartScreen");
+            string legacyFolder = Path.Combine(AniiModEnvironment.UserDataDirectory, "MelonStartScreen");
+            if (!Directory.Exists(FolderPath) && Directory.Exists(legacyFolder))
+                FolderPath = legacyFolder;
             if (!Directory.Exists(FolderPath))
                 Directory.CreateDirectory(FolderPath);
 
