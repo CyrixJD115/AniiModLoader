@@ -19,37 +19,62 @@ namespace MelonLoader.InternalUtils
                 return true;
 
             MelonLogger.MsgDirect("Loading Il2CppAssemblyGenerator...");
-            var module = MelonModule.Load(moduleInfo);
-            if (module == null)
+
+            // Aniimo: generation failure must disable mods, never kill the
+            // game. Under Wine/Proton the console-window calls threw
+            // Win32Exception (Invalid window handle) straight into native.
+            try
             {
-                if (File.Exists(modulePath))
-                    MelonLogger.Error("Failed to Load Il2CppAssemblyGenerator!");
-                else
-                    MelonLogger.Error("Il2CppAssemblyGenerator was Not Found!");
+                var module = MelonModule.Load(moduleInfo);
+                if (module == null)
+                {
+                    if (File.Exists(modulePath))
+                        MelonLogger.Error("Failed to Load Il2CppAssemblyGenerator!");
+                    else
+                        MelonLogger.Error("Il2CppAssemblyGenerator was Not Found!");
+                    return false;
+                }
+
+                if (MelonUtils.IsWindows)
+                {
+                    try
+                    {
+                        IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
+                        if (windowHandle != IntPtr.Zero)
+                        {
+#if WINDOWS
+                            BootstrapInterop.DisableCloseButton(windowHandle);
+#endif
+                        }
+                    }
+                    catch { /* no window under Wine; cosmetic call */ }
+                }
+
+                var ret = module.SendMessage("Run");
+
+                if (MelonUtils.IsWindows)
+                {
+                    try
+                    {
+                        IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
+                        if (windowHandle != IntPtr.Zero)
+                        {
+#if WINDOWS
+                            BootstrapInterop.EnableCloseButton(windowHandle);
+#endif
+                        }
+                    }
+                    catch { /* no window under Wine; cosmetic call */ }
+                }
+
+                return ret is 0;
+            }
+            catch (Exception error)
+            {
+                MelonLogger.Error("Il2CppAssemblyGenerator failed:");
+                MelonLogger.Error(error);
                 return false;
             }
-
-            if (MelonUtils.IsWindows)
-            {
-                IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
-
-#if WINDOWS
-                BootstrapInterop.DisableCloseButton(windowHandle);
-#endif
-            }
-
-            var ret = module.SendMessage("Run");
-            
-            if (MelonUtils.IsWindows)
-            {
-                IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
-
-#if WINDOWS
-                BootstrapInterop.EnableCloseButton(windowHandle);
-#endif
-            }
-
-            return ret is 0;
         }
     }
 }

@@ -113,12 +113,22 @@ internal static unsafe class BootstrapInterop
 
     internal static void Start()
     {
+        AniimoTrace.Log("BootstrapInterop.Start entered");
+        // Aniimo safe mode: fully passive observation.
+        bool safe = Array.IndexOf(Environment.GetCommandLineArgs(), "--aniimo.safe") >= 0;
+        if (safe)
+        {
+            AniimoTrace.Log("SAFE MODE: skipping Core.Start (passive observation only)");
+            return;
+        }
         try
         {
             Core.Start();
+            AniimoTrace.Log("Core.Start returned");
         }
         catch (Exception ex)
         {
+            AniimoTrace.Log($"Core.Start THREW: {ex}");
             MelonLogger.Error("Failed to start MelonLoader");
             MelonLogger.Error(ex);
 

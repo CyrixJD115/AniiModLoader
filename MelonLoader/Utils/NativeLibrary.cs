@@ -49,9 +49,49 @@ namespace MelonLoader
 
             IntPtr returnval = AgnosticGetProcAddress(nativeLib, name);
             if (returnval == IntPtr.Zero)
+            {
+                // Aniimo: GameAssembly.dll ships with obfuscated export
+                // names. MelonLoader/Il2CppNameMap.txt (written by our
+                // tooling) maps real il2cpp API names to the scrambled
+                // exports; retry through it before giving up.
+                var translated = AniimoNameMapTranslate(name);
+                if (translated != null)
+                    returnval = AgnosticGetProcAddress(nativeLib, translated);
+            }
+            if (returnval == IntPtr.Zero)
                 throw new Exception($"Unable to Find Native Library Export {name}!");
 
             return returnval;
+        }
+
+        private static System.Collections.Generic.Dictionary<string, string> _aniimoNameMap;
+        private static bool _aniimoNameMapLoaded;
+
+        private static string AniimoNameMapTranslate(string realName)
+        {
+            if (!_aniimoNameMapLoaded)
+            {
+                _aniimoNameMapLoaded = true;
+                try
+                {
+                    var path = System.IO.Path.Combine(
+                        MelonEnvironment.MelonLoaderDirectory,
+                        "Il2CppNameMap.txt");
+                    if (System.IO.File.Exists(path))
+                    {
+                        _aniimoNameMap = new System.Collections.Generic.Dictionary<string, string>();
+                        foreach (var line in System.IO.File.ReadAllLines(path))
+                        {
+                            var idx = line.IndexOf('=');
+                            if (idx <= 0)
+                                continue;
+                            _aniimoNameMap[line[..idx].Trim()] = line[(idx + 1)..].Trim();
+                        }
+                    }
+                }
+                catch { }
+            }
+            return _aniimoNameMap != null && _aniimoNameMap.TryGetValue(realName, out var scr) ? scr : null;
         }
 
         public static IntPtr AgnosticLoadLibrary(string name)

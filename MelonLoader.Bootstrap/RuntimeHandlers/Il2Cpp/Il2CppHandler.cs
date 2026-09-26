@@ -47,6 +47,23 @@ internal static class Il2CppHandler
         DotnetHandler.Initialize();
         il2cppInitDone = true;
 
+        // Aniimo early-start: with the invoke detour disabled there is no
+        // scene-change hijack to trigger Core.Start, so start it here.
+        if (ModuleSymbolRedirect.EarlyStart && !invokeStarted)
+        {
+            invokeStarted = true;
+            Trace.Log("earlystart: triggering DotnetHandler.Start from InitDetour");
+            try
+            {
+                DotnetHandler.Start();
+                Trace.Log("earlystart: DotnetHandler.Start returned");
+            }
+            catch (Exception error)
+            {
+                Trace.Log($"earlystart: DotnetHandler.Start threw: {error.Message}");
+            }
+        }
+
         return domain;
     }
 

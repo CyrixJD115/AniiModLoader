@@ -82,14 +82,39 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
 #endif
 
         internal override bool Execute()
-            => Execute([
+        {
+            // Aniimo: the game's custom sidecar metadata crashes stock
+            // Cpp2IL's v29 attribute parsing. Prebaked DummyDlls (staged
+            // by our tooling in PrebakedDummyDll/) bypass Cpp2IL entirely;
+            // Il2CppInterop consumes the output folder the same way.
+            var prebaked = Path.Combine(Core.BasePath, "PrebakedDummyDll");
+            if (Directory.Exists(prebaked)
+                && Directory.GetFiles(prebaked, "*.dll").Length > 0)
+            {
+                Core.Logger.Msg("Using Prebaked DummyDlls (bypassing Cpp2IL)...");
+                Directory.CreateDirectory(OutputFolder);
+                foreach (var dll in Directory.GetFiles(prebaked, "*.dll"))
+                    File.Copy(dll, Path.Combine(OutputFolder, Path.GetFileName(dll)), true);
+                return true;
+            }
+
+            // Aniimo: global-metadata.dat is encrypted on disk; a shadow
+            // game directory (symlinks to everything real except the
+            // metadata, which points at the decrypted copy) lets Cpp2IL
+            // see plain metadata without touching the game's file.
+            var shadow = Path.Combine(Core.BasePath, "AniimoShadow");
+            var shadowGameAssembly = Path.Combine(shadow, "GameAssembly.dll");
+            var gamePath = File.Exists(shadowGameAssembly)
+                ? "\"" + shadow + "\""
+                : "\"" + Path.GetDirectoryName(Core.GameAssemblyPath) + "\"";
+            return Execute([
                 MelonDebug.IsEnabled() ? "--verbose" : string.Empty,
 
                 "--game-path",
 #if OSX
                 "\"" + MelonUtils.GetPathAncestor(Core.GameAssemblyPath, 3) + "\"",
 #else
-                "\"" + Path.GetDirectoryName(Core.GameAssemblyPath) + "\"",
+                gamePath,
 #endif
 
                 "--exe-name",
@@ -109,5 +134,6 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
             ], false, new Dictionary<string, string>() {
                 {"NO_COLOR", "1"},
             });
+        }
     }
 }

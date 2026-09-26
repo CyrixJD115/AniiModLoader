@@ -138,29 +138,40 @@ namespace MelonLoader
 #endif
 
 #if NET6_0_OR_GREATER
+            // Aniimo nopatch mode (--aniimo.nopatch): skip every native
+            // code detour - this game's startup kills processes with
+            // patched GameAssembly code pages.
+            bool nopatch = Array.IndexOf(Environment.GetCommandLineArgs(), "--aniimo.nopatch") >= 0;
+            if (nopatch)
+                InternalUtils.AniimoTrace.Log("nopatch: skipping native detour installs");
+            if (!nopatch)
+            {
+                Fixes.AsmResolver.AsmResolverUtf8StringConcatFix.Install();
+                Fixes.Il2CppInterop.Il2CppInteropUnmangleMethodNameFix.Install();
 
-            Fixes.AsmResolver.AsmResolverUtf8StringConcatFix.Install();
-            Fixes.Il2CppInterop.Il2CppInteropUnmangleMethodNameFix.Install();
-
-            Fixes.Il2CppInterop.Il2CppInteropExceptionLog.Install();
+                Fixes.Il2CppInterop.Il2CppInteropExceptionLog.Install();
 
 #if OSX
-            Fixes.Dotnet.NativeLibraryFix.Install();
+                Fixes.Dotnet.NativeLibraryFix.Install();
 #endif
 
-            Fixes.Il2CppInterop.Il2CppInteropFixes.Install();
-            //Fixes.Il2CppInterop.Il2CppInteropIl2CppObjectBaseFix.Install();
-            Fixes.Il2CppInterop.Il2CppInteropInjectorHelpersSetupFix.Install();
-            Fixes.Il2CppInterop.Il2CppInteropGetFieldDefaultValueFix.Install();
-            Fixes.Il2CppInterop.Il2CppICallInjector.Install();
-
+                Fixes.Il2CppInterop.Il2CppInteropFixes.Install();
+                //Fixes.Il2CppInterop.Il2CppInteropIl2CppObjectBaseFix.Install();
+                Fixes.Il2CppInterop.Il2CppInteropInjectorHelpersSetupFix.Install();
+                Fixes.Il2CppInterop.Il2CppInteropGetFieldDefaultValueFix.Install();
+                Fixes.Il2CppInterop.Il2CppICallInjector.Install();
+            }
 #endif
 
-            PatchShield.Install();
+            if (!nopatch)
+                PatchShield.Install();
 
 #if WINDOWS
-            Fixes.WindowsUnhandledQuit.Install();
-            MelonEvents.OnUpdate.Subscribe(Fixes.WindowsUnhandledQuit.Update, int.MaxValue);
+            if (!nopatch)
+            {
+                Fixes.WindowsUnhandledQuit.Install();
+                MelonEvents.OnUpdate.Subscribe(Fixes.WindowsUnhandledQuit.Update, int.MaxValue);
+            }
 #endif
 
             MelonPreferences.Load();
@@ -173,8 +184,11 @@ namespace MelonLoader
             MelonFolderHandler.LoadMelons(MelonFolderHandler.ScanType.UserLibs);
             MelonFolderHandler.LoadMelons(MelonFolderHandler.ScanType.Plugins);
 
+            InternalUtils.AniimoTrace.Log("Initialize: plugins loaded, invoking MelonHarmonyEarlyInit");
             MelonEvents.MelonHarmonyEarlyInit.Invoke();
+            InternalUtils.AniimoTrace.Log("Initialize: MelonHarmonyEarlyInit survived, invoking OnPreInitialization");
             MelonEvents.OnPreInitialization.Invoke();
+            InternalUtils.AniimoTrace.Log("Initialize: OnPreInitialization survived, returning");
 
 #if !NET6_0_OR_GREATER
             // Set up the Core.Start entrypoint which harmony patches the main Unity assembly as soon as possible and
@@ -187,9 +201,14 @@ namespace MelonLoader
 
         private static int PreSetup()
         {
+            InternalUtils.AniimoTrace.Log("PreSetup entered");
 #if NET6_0_OR_GREATER
             if (_success)
+            {
+                InternalUtils.AniimoTrace.Log("PreSetup: calling Il2CppAssemblyGenerator.Run");
                 _success = Il2CppAssemblyGenerator.Run();
+                InternalUtils.AniimoTrace.Log($"PreSetup: generator returned {_success}");
+            }
 #endif
 
             return _success ? 0 : 1;
@@ -197,8 +216,11 @@ namespace MelonLoader
 
         internal static bool Start()
         {
+            InternalUtils.AniimoTrace.Log("Core.Start entered");
             MelonEvents.OnApplicationEarlyStart.Invoke();
+            InternalUtils.AniimoTrace.Log("Core.Start: OnApplicationEarlyStart done, entering LoadAndRun(PreSetup)");
             MelonStartScreen.LoadAndRun(PreSetup);
+            InternalUtils.AniimoTrace.Log($"Core.Start: PreSetup done, _success={_success}");
 
             if (!_success)
                 return false;
