@@ -10,6 +10,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
         internal static SemVersion NetCoreMinVersion = SemVersion.Parse("2022.1.0-pre-release.18");
         internal SemVersion VersionSem;
         private string BaseFolder;
+        internal bool UsedPrebaked { get; private set; }
 
         private static string ReleaseName =>
             MelonUtils.IsWindows ? "Windows" : MelonUtils.IsUnix ? "Linux" : "OSX";
@@ -93,8 +94,8 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
             {
                 Core.Logger.Msg("Using Prebaked DummyDlls (bypassing Cpp2IL)...");
                 Directory.CreateDirectory(OutputFolder);
-                foreach (var dll in Directory.GetFiles(prebaked, "*.dll"))
-                    File.Copy(dll, Path.Combine(OutputFolder, Path.GetFileName(dll)), true);
+                PrebakedAssemblySanitizer.Normalize(prebaked, OutputFolder, message => Core.Logger.Msg(message));
+                UsedPrebaked = true;
                 return true;
             }
 

@@ -36,7 +36,7 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
             var resolver = new InteropResolver();
             var inputAssemblies = Directory.GetFiles(Core.cpp2il.OutputFolder)
                 .Where(f => f.EndsWith(".dll"))
-                .Select(f => ModuleDefinition.FromFile(f, new ModuleReaderParameters() { ModuleResolver = resolver }))
+                .Select(f => ModuleDefinition.FromFile(f, new ModuleReaderParameters(Path.GetDirectoryName(f)) { ModuleResolver = resolver }))
                 .Select(f => { resolver.Add(f); return f; })
                 .Select(f => f.Assembly)
                 .ToList();
@@ -49,6 +49,9 @@ namespace MelonLoader.Il2CppAssemblyGenerator.Packages
                 UnityBaseLibsDir = Core.unitydependencies.Destination,
                 ObfuscatedNamesRegex = string.IsNullOrEmpty(Core.deobfuscationRegex.Regex) ? null : new Regex(Core.deobfuscationRegex.Regex),
                 Parallel = true,
+                // Protected Aniimo builds do not expose the metadata-init pattern
+                // assumed by the optional xref cache. Keep normal generation intact.
+                NoXrefCache = Core.cpp2il is Cpp2IL { UsedPrebaked: true },
                 Il2CppPrefixMode = GeneratorOptions.PrefixMode.OptOut,
             };
 
