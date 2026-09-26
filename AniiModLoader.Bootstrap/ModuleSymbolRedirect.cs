@@ -79,7 +79,11 @@ namespace AniiModLoader.Bootstrap
         }
 
         internal static nint GetSymbol(nint handle, string symbolName)
-            => GetSymbol(handle, Marshal.StringToHGlobalAnsi(TranslateResolve(symbolName)));
+        {
+            var name = Marshal.StringToHGlobalAnsi(TranslateResolve(symbolName));
+            try { return GetSymbol(handle, name); }
+            finally { Marshal.FreeHGlobal(name); }
+        }
         private static nint GetSymbol(nint handle, nint symbolName)
         {
             if ((handle == nint.Zero)
