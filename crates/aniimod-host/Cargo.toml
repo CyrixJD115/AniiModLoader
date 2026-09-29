@@ -1,0 +1,17 @@
+[package]
+name = "aniimod-host"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+# builds as version.dll — the game loads it as a proxy at process start
+crate-type = ["cdylib"]
+
+[dependencies]
+aniimod-map = { path = "../aniimod-map" }
+aniimod-ffi = { path = "../aniimod-ffi" }
+aniimod-metadata = { path = "../aniimod-metadata" }
+aniimod-hook = { path = "../aniimod-hook" }
+aniimod-mod = { path = "../aniimod-mod" }
+sha2 = "0.10"

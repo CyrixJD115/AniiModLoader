@@ -1,0 +1,8 @@
+[package]
+name = "aniimod-ffi"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+aniimod-map = { path = "../aniimod-map" }

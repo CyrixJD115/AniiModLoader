@@ -1,0 +1,12 @@
+[package]
+name = "anii-signal"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+aniimod-mod = { path = "../../crates/aniimod-mod" }
+serde_json = "1"

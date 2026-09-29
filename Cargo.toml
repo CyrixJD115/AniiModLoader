@@ -1,0 +1,22 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/aniimod-map",
+    "crates/aniimod-ffi",
+    "crates/aniimod-metadata",
+    "crates/aniimod-hook",
+    "crates/aniimod-mod",
+    "crates/aniimod-host",
+    "mods/anii-example",
+    "mods/anii-signal",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[profile.release]
+lto = "thin"
+strip = false
+debug = 1
