@@ -25,6 +25,10 @@ strictly prohibited:
 - The loader targets your own local copy of the game together with your own
   local Serviimo server. That is the entire scope.
 
+The full legal terms — reverse-engineering statement, bring-your-own-game
+rule, AI-assisted-development disclosure, and DMCA policy — live in
+[LEGAL.md](LEGAL.md).
+
 The predecessor C# engine (MelonLoader fork, "AniiModLoader v0.7.3") is parked
 at `../AniiModLoader_C`. It reached: loader boots, export map verified live
 (133 images enumerated), interop assemblies generated, `AniiSignal` mod loads.
@@ -86,25 +90,10 @@ Test loop: `python3 ../tools/aniiharness/aniiharness.py --verbose run
 to the game dir as `version.dll` (+ `steam_appid.txt` for direct launches;
 the prefix DllOverride already persists).
 
-## Legal notice
+## Legal
 
-- **Not affiliated.** This is a personal, fan-made project. It is not
-  affiliated with, endorsed by, or sponsored by the developers or publishers
-  of Aniimo. All game names, trademarks, and assets belong to their
-  respective owners.
-- **No game content is distributed.** This repository contains no part of the
-  game — no binaries, assets, code, or data. Cloning it gives you nothing
-  from the game.
-- **Bring your own game.** You must provide your own game files, obtained
-  through your own legitimate Steam account. This project never distributes
-  game files or helps anyone acquire them unlawfully.
-- **Interoperability and research.** The loader exists for interoperability
-  with your own legitimately obtained copy of the game (through your own
-  Serviimo server), and for personal education and reverse-engineering
-  research on that copy.
-- **Rights holders.** If you believe something in this repository infringes
-  your rights, please open an issue describing it; legitimate reports will
-  be reviewed and resolved promptly.
-- **No warranty.** Everything is provided "as is", without warranty of any
-  kind. You are responsible for how you use this software and for complying
-  with the game's terms of service and the laws that apply to you.
+Fan-made, non-commercial, and not affiliated with the game's developers or
+publishers. No game content is distributed — you must bring your own game
+files from your own Steam account. Full notice — reverse-engineering
+statement, acceptable use, AI-assisted-development disclosure, and takedown
+policy: **[LEGAL.md](LEGAL.md)**.
