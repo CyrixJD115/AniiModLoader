@@ -1,5 +1,11 @@
 # AniiModLoader (Rust engine)
 
+> ⚠️ **Heavily work in progress.** Some functions work, some don't. Any
+> contribution really helps — here or in the sibling ecosystem modules
+> ([Serviimo](https://github.com/CyrixJD115/Serviimo),
+> [Apiimo](https://github.com/CyrixJD115/Apiimo)) — all coordinated from
+> [AniiStudio](https://github.com/CyrixJD115/AniiStudio).
+
 A native mod-loader engine for Aniimo (Steam app 4126040, Unity 2022.3.62f1
 il2cpp, Proton/Wine), written entirely in Rust.
 
