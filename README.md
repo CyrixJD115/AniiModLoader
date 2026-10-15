@@ -9,6 +9,11 @@
 A native mod-loader engine for Aniimo (Steam app 4126040, Unity 2022.3.62f1
 il2cpp, Proton/Wine), written entirely in Rust.
 
+## Docs
+- [Legal notice](LEGAL.md) — reverse-engineering statement, bring-your-own-game rule, acceptable use, DMCA policy
+- [Notice](NOTICE.md) — short-form disclaimer and attribution
+- [License](LICENSE) — GPL-3.0
+
 ## Purpose and acceptable use — read this first
 
 Mods in this ecosystem exist for exactly one purpose: **playing on your own
